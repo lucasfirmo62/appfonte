@@ -1,0 +1,59 @@
+h1 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.about-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title-here{
+    color: white;
+    font-size: 20px;
+    padding-top: 10px;
+}
+
+.streamings {
+    display: flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-streaming {
+    background-color: rgba(255, 0, 0, 0);
+    border: solid rgba(0, 0, 0, 0) 1px;
+}
+
+.logo-streams {
+    width: 60px;
+    transition: 0.2s;
+    padding: 30px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+.logo-streams:hover {
+    background-color: rgb(87, 141, 250);
+    transition: 0.3s;
+}
+
+.align-here {
+    padding: 20px;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.watch-here {
+    background-color: rgba(0, 0, 0, 0.882);
+    border-radius: 10px;
+}

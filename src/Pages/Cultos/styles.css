@@ -1,0 +1,16 @@
+h1{
+    display: flex;
+    justify-content: center;    
+    align-items: center;        
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.content-cultos{
+    padding: 5%;
+}
+
+.content-books{
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+}

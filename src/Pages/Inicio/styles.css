@@ -1,0 +1,28 @@
+.back-wall{
+    background-color: rgb(222, 241, 240);
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.grid{
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+}
+
+.grid-inside{
+    padding: 40px;
+    width: 33%;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .grid{
+        display:block;
+        padding-bottom: 100px;
+    }
+    .grid-inside{
+        width: auto;
+        max-width: 75%;
+        padding: 10%;
+    }
+}
