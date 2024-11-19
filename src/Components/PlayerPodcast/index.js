@@ -57,7 +57,7 @@ const PlayerPodcast = ({ tema, data, autor, audio }) => {
           <div className='info-card'>
             <div className='content-info'>
               <p className='title-player'>Episódio{" " + tema}</p>
-              <p className='title-player'>Por{" " + autor}</p>
+              <p className='title-player'>Por{" " + autor + " "}</p>
             </div>
           </div>
           <div className="audio-player">

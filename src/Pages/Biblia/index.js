@@ -10,12 +10,50 @@ const BibleReader = () => {
     const [selectedBook, setSelectedBook] = useState(0); // Índice do livro inicial
     const [selectedChapter, setSelectedChapter] = useState(0); // Capítulo inicial
     const [selectedVerse, setSelectedVerse] = useState(null); // Versículo inicial (null quando nenhum versículo está selecionado)
+    const [verseExplanation, setVerseExplanation] = useState(null); // Armazena a explicação do versículo
+    const [isExplanationVisible, setIsExplanationVisible] = useState(true); // Estado para controlar a visibilidade da explicação
 
     // URLs para cada versão da Bíblia
     const versionUrls = {
         NVI: "https://raw.githubusercontent.com/thiagobodruk/biblia/refs/heads/master/json/nvi.json",
         AA: "https://raw.githubusercontent.com/thiagobodruk/biblia/refs/heads/master/json/aa.json",
         ARA: "https://raw.githubusercontent.com/thiagobodruk/biblia/refs/heads/master/json/acf.json"
+    };
+
+    const fetchVerseExplanation = async (verseText) => {
+        try {
+            const apiKey = process.env.REACT_APP_CHATGPT_KEY;
+
+            const params = {
+                model: "gpt-3.5-turbo",  // Modelo
+                messages: [
+                    {
+                        role: "user",
+                        content: `Me explique o versículo ${verseText}, com no máximo 300 caracteres. Se exixtir, utilize referências de outras partes da biblia.`
+                    }
+                ],
+                max_tokens: 100,
+                temperature: 1,
+            };
+
+            const response = await axios.post(
+                "https://api.openai.com/v1/chat/completions",
+                params,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`,
+                    }
+                }
+            );
+
+            console.log(response.data.choices[0].message.content.trim())
+            return response.data.choices[0].message.content.trim();  // Retorna a explicação
+
+        } catch (error) {
+            console.error("Erro ao buscar explicação:", error.response?.data || error.message);
+            return "Não foi possível obter uma explicação no momento.";  // Mensagem de erro
+        }
     };
 
     // Função para buscar dados com base na versão selecionada
@@ -47,8 +85,11 @@ const BibleReader = () => {
     };
 
     // Manipulador para selecionar versículos
-    const handleVerseSelect = (event) => {
-        setSelectedVerse(Number(event.target.value));
+    const handleVerseSelect = async (verseText) => {
+        setSelectedVerse(verseText);
+        const explanation = await fetchVerseExplanation(verseText);
+        setVerseExplanation(explanation);
+        setIsExplanationVisible(true); // Exibe a explicação ao selecionar um versículo
     };
 
     // Manipulador para selecionar a versão
@@ -59,77 +100,70 @@ const BibleReader = () => {
         setSelectedVerse(null); // Redefine o versículo
     };
 
+    // Função para fechar a explicação
+    const closeExplanation = () => {
+        setIsExplanationVisible(false); // Esconde a explicação
+    };
+
     return (
         <>
             <Menu />
             <h1>Bíblia Devocional</h1>
             <div className='app-bible'>
                 {/* Botões para selecionar a versão da Bíblia */}
-
                 {data ? (
                     <div>
-                        <div className="version-selectors">
-                            <button className='button-bible' onClick={() => handleVersionSelect("NVI")}>NVI</button>
-                            <button className='button-bible' onClick={() => handleVersionSelect("AA")}>AA</button>
-                            <button className='button-bible' onClick={() => handleVersionSelect("ARA")}>ARA</button>
-                        </div>
-                                <center><button className='back-cap-full' onClick={() => setSelectedVerse(null)}>Ver Capítulo Inteiro</button></center>
-                        <div className='filters-selectors'>
-                            <select value={selectedBook} onChange={handleBookSelect}>
-                                {data.map((book, index) => (
-                                    <option key={index} value={index}>
-                                        {book.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                        <div className='bar-conf-bible'>
+                            <div className="version-selectors">
+                                <button className='button-bible' onClick={() => handleVersionSelect("NVI")}>NVI</button>
+                                <button className='button-bible' onClick={() => handleVersionSelect("AA")}>AA</button>
+                                <button className='button-bible' onClick={() => handleVersionSelect("ARA")}>ARA</button>
+                            </div>
+                            <div className='filters-selectors'>
+                                <select value={selectedBook} onChange={handleBookSelect}>
+                                    {data.map((book, index) => (
+                                        <option key={index} value={index}>
+                                            {book.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
 
-                        <div className='filters-selectors'>
-                            <select value={selectedChapter} onChange={handleChapterSelect}>
-                                {data[selectedBook].chapters.map((chapter, index) => (
-                                    <option key={index} value={index}>
-                                        Capítulo {index + 1}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className='filters-selectors'>
+                                <select value={selectedChapter} onChange={handleChapterSelect}>
+                                    {data[selectedBook].chapters.map((chapter, index) => (
+                                        <option key={index} value={index}>
+                                            Capítulo {index + 1}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
 
-                            {/* Selecionar Versículo */}
-                            <select value={selectedVerse !== null ? selectedVerse : ''} onChange={handleVerseSelect}>
-                                <option value="">Selecione um versículo</option>
-                                {data[selectedBook].chapters[selectedChapter].map((verse, index) => (
-                                    <option key={index} value={index}>
-                                        Versículo {index + 1}
-                                    </option>
-                                ))}
-                            </select>
                         </div>
 
+                        {data[selectedBook].chapters[selectedChapter].map((verse, index) => (
+                            <p
+                                className='text-verse'
+                                key={index}
+                                onClick={() => handleVerseSelect(verse)} // Busca a explicação ao clicar
+                                style={{ cursor: "pointer" }} // Indica que o texto é clicável
+                            >
+                                <strong className='verse-intro'>{index + 1} </strong>
+                                {verse}
+                            </p>
+                        ))}
 
-                        {/* Exibir o Versículo Selecionado e ocultar o restante do capítulo */}
-                        {selectedVerse !== null && (
-                            <>
-                                <div className='content-verses'>
-                                    <p>
-                                        <strong className='verse-intro'>{selectedVerse + 1} </strong>
-                                        {data[selectedBook].chapters[selectedChapter][selectedVerse]}
-                                    </p>
+                        {/* Exibir a explicação do versículo */}
+                        {isExplanationVisible && verseExplanation && (
+                            <div className="verse-explanation">
+                                <button className="close-button" onClick={closeExplanation}>Ocultar</button>
+
+                                <div className='toltips-verses'>
+                                    <h3 className='button-verse-explanations'>Explicação do Versículo</h3>
+                                    <h3 className='button-verse-explanations'>Versíclos relacionados</h3>
+                                    <h3 className='button-verse-explanations'>Palavras chave</h3>
                                 </div>
-                            </>
-                        )}
-
-                        {/* Mostrar o Capítulo Inteiro apenas se nenhum versículo estiver selecionado */}
-                        {selectedVerse === null && (
-                            <div>
-                                <div className='content-verses'>
-                                    <div className='intro-content-verses'>
-                                        {data[selectedBook].chapters[selectedChapter].map((verse, index) => (
-                                            <p className='text-verse' key={index}>
-                                                <strong className='verse-intro'>{index + 1} </strong>
-                                                {verse}
-                                            </p>
-                                        ))}
-                                    </div>
-                                </div>
+                                <p>{verseExplanation}</p>
                             </div>
                         )}
                     </div>

@@ -10,7 +10,7 @@
 }
 
 .card-posts:hover{
-    background-color: rgb(169, 215, 255);
+    background-color: #a9d7ff;
 }
 
 .poster-book{
@@ -29,6 +29,8 @@
     color: rgb(164, 20, 20);
 }
 
-.grid-books{
-    display: flex;
+.persons-read{
+    width: 15px;
+    height: 15px;
+    border-radius: 100%;
 }

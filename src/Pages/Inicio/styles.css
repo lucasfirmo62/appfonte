@@ -1,12 +1,15 @@
 .back-wall{
-    background-color: rgb(222, 241, 240);
+    background-color: #0085c9;
     font-family: 'Courier New', Courier, monospace;
+    color: white;
 }
 
 .grid{
     display: flex;
     justify-content: center;    
     align-items: center;
+    margin-top: -10%;
+    color: white;
 }
 
 .grid-inside{
@@ -15,14 +18,34 @@
     text-align: center;
 }
 
+.banner-home{
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to top, transparent 5%, black 40%);
+            mask-image: linear-gradient(to top, transparent 5%, black 40%);
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+}
+
+.mod-bank{
+    width: 100%;
+    margin-top: -10%;
+}
+
 @media (max-width: 768px) {
     .grid{
         display:block;
         padding-bottom: 100px;
+        margin-top: -30%;
+        color: white;
     }
     .grid-inside{
         width: auto;
         max-width: 75%;
         padding: 10%;
+    }
+
+    .banner-home{
+        height: 400px;
+        object-fit: cover;
     }
 }

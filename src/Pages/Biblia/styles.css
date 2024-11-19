@@ -30,6 +30,12 @@
     justify-content: left;
     width: 500px;
     margin: 5px 0;
+    padding: 3px;
+    font-size: 18px;
+  }
+
+  .text-verse:hover{
+    background-color: aliceblue;
   }
 
   select{
@@ -77,6 +83,46 @@
     cursor: pointer;
   }
 
+  .verse-explanation{
+    position: fixed;
+    bottom: 3%;
+    left: 0%;
+    width: auto;
+    height: 200px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: solid 2px black;
+    overflow-y: auto;
+    margin: 3%;
+    .close-button{
+      margin-top: -10px;
+      cursor: pointer;
+    }
+  }
+
+  .toltips-verses{
+    overflow-y: auto;
+    display: flex;
+    h3{
+      margin-left: 4px;
+    }
+  }
+
+  .button-verse-explanations{
+    padding: 10px;
+    cursor: pointer;
+  }
+
+.button-verse-explanations:hover{
+  background-color: black;
+  color: white;
+}
+
+.bar-conf-bible{
+  display: flex;
+}
+  
   @media (max-width: 768px) {
     .content-verses{
       display: flex;
@@ -90,5 +136,28 @@
       align-items: left;
       justify-content: left;
       width: 100%;
+    }
+
+    .verse-explanation{
+      position: fixed;
+      bottom: 15%;
+      left: 0%;
+      width: auto;
+      height: 200px;
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+      border: solid 2px black;
+      overflow-y: auto;
+      margin: 2%;
+    }
+
+    .button-verse-explanations{
+      min-width: 40%;
+    }
+
+    .toltips-verses{
+      width: 98%;
+      overflow-y: auto;
     }
   }

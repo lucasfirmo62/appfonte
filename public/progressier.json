@@ -1,0 +1,37 @@
+{
+    "short_name": "app Fonte",
+    "dir": "auto",
+    "name": "Fonte",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "display": "standalone",
+    "start_url": "https://appfonte.vercel.app/?launchedfrom=homescreen",
+    "scope": "https://appfonte.vercel.app",
+    "id": "https://appfonte.vercel.app/AplUwjRF6gIa3AIMrIwn",
+    "prefer_related_applications": false,
+    "related_applications": [],
+    "icons": [
+        {
+            "src": "https://pwa.xyz/v0/b/pwaa-8d87e.appspot.com/o/d83RFQeVWOpETRkuKkaj%2FQStUCqJmSYjvbCI.png?alt=media&token=292c7568-0882-4946-a2f7-258b60b59dc7",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "https://pwa.xyz/v0/b/pwaa-8d87e.appspot.com/o/d83RFQeVWOpETRkuKkaj%2FNahyoVlGIxgiGRe.png?alt=media&token=8d5d1025-e4b4-4717-95b6-a73448e0eedb",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ],
+    "protocol_handlers": [
+        {
+            "protocol": "web+pwa",
+            "url": "https://appfonte.vercel.app/?launchedfrom=homescreen&pwaprotocolredirect=%s"
+        },
+        {
+            "protocol": "web+fonte",
+            "url": "https://appfonte.vercel.app/?launchedfrom=homescreen&pwaprotocolredirect=%s"
+        }
+    ]
+}

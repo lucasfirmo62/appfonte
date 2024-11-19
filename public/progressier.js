@@ -1,0 +1,1 @@
+importScripts("https://raw.githubusercontent.com/lucasfirmo62/appfonte/refs/heads/main/public/sw.js");

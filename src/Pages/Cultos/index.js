@@ -4,6 +4,7 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import Menu from "../../Components/Menu";
 import "./styles.css"
 import CardPosts from "../../Components/Card-posts";
+import Footer from "../../Components/Footer";
 
 const PDFReader = () => {
     const [numPages, setNumPages] = useState(null);
@@ -30,6 +31,7 @@ const PDFReader = () => {
             <div className="content-books">
                 <CardPosts />
             </div>
+            <Footer/>
         </div>
     );
 };
