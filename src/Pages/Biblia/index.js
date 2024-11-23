@@ -22,7 +22,6 @@ const BibleReader = () => {
 
     const fetchVerseExplanation = async (verseText) => {
         try {
-            const apiKey = process.env.REACT_APP_CHATGPT_KEY;
 
             const params = {
                 model: "gpt-3.5-turbo",  // Modelo
@@ -42,12 +41,11 @@ const BibleReader = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${apiKey}`,
+                        "Authorization": `Bearer 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`,
                     }
                 }
             );
 
-            console.log(response.data.choices[0].message.content.trim())
             return response.data.choices[0].message.content.trim();  // Retorna a explicação
 
         } catch (error) {

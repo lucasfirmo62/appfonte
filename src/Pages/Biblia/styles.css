@@ -3,6 +3,7 @@
     justify-content: center;    
     align-items: center;
     background-color: rgb(255, 255, 255);
+    width: 100%;
 }
 
 .title-cap-bible{
@@ -135,7 +136,12 @@
       display: flex;
       align-items: left;
       justify-content: left;
-      width: 100%;
+      width: 98%;
+      padding-right: 5px;
+    }
+
+    .text-verse strong{
+      padding: 5px;
     }
 
     .verse-explanation{
