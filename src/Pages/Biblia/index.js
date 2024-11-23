@@ -41,7 +41,7 @@ const BibleReader = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer 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`,
+                        "Authorization": `Bearer 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`,
                     }
                 }
             );
