@@ -24,7 +24,7 @@ const BibleReader = () => {
         try {
 
             const params = {
-                model: "gpt-3.5-turbo",  // Modelo
+                model: "gpt-3.5-turbo",
                 messages: [
                     {
                         role: "user",
@@ -41,7 +41,7 @@ const BibleReader = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer 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`,
+                        "Authorization": `Bearer ${process.env.REACT_APP_KEY_BIBLE}`,
                     }
                 }
             );
