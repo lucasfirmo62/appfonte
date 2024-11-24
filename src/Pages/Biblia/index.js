@@ -21,6 +21,9 @@ const BibleReader = () => {
     };
 
     const fetchVerseExplanation = async (verseText) => {
+
+        const apiKey = process.env.REACT_APP_API_KEY_BIBLE;
+
         try {
 
             const params = {
@@ -41,7 +44,7 @@ const BibleReader = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${process.env.REACT_APP_KEY_BIBLE}`,
+                        "Authorization": `Bearer ${apiKey}`,
                     }
                 }
             );
