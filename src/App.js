@@ -4,6 +4,7 @@ import Login from "./Pages/Login";
 import Livros from "./Pages/Cultos";
 import Podcast from './Pages/Podcast';
 import Biblia from './Pages/Biblia';
+import Conf from './Pages/Configuracao'
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/livros" element={<Livros />} />
         <Route path="/podcast" element={<Podcast />} />
         <Route path="/biblia" element={<Biblia />} />
+        <Route path="/Configuracao" element={<Conf />} />
       </Routes>
     </Router>
   );

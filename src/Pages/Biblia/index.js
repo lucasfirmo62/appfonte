@@ -11,7 +11,10 @@ const BibleReader = () => {
     const [selectedChapter, setSelectedChapter] = useState(0); // Capítulo inicial
     const [selectedVerse, setSelectedVerse] = useState(null); // Versículo inicial (null quando nenhum versículo está selecionado)
     const [verseExplanation, setVerseExplanation] = useState(null); // Armazena a explicação do versículo
-    const [isExplanationVisible, setIsExplanationVisible] = useState(true); // Estado para controlar a visibilidade da explicação
+    const [verseExplanationRelas, setverseExplanationRelas] = useState(null); // Armazena a explicação do versículo
+    const [verseExplanationWord, setverseExplanationWord] = useState(null); // Armazena a explicação do versículo
+    const [isExplanationVisible, setIsExplanationVisible] = useState(false); // Estado para controlar a visibilidade da explicação
+    const [selectedExplanationType, setSelectedExplanationType] = useState(null); // Controla qual tipo de explicação foi selecionado
 
     // URLs para cada versão da Bíblia
     const versionUrls = {
@@ -21,11 +24,7 @@ const BibleReader = () => {
     };
 
     const fetchVerseExplanation = async (verseText) => {
-
-        const apiKey = process.env.REACT_APP_API_KEY_BIBLE;
-
         try {
-
             const params = {
                 model: "gpt-3.5-turbo",
                 messages: [
@@ -44,7 +43,73 @@ const BibleReader = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${apiKey}`,
+                        "Authorization": `Bearer ${process.env.REACT_APP_KEY_BIBLE}`,
+                    }
+                }
+            );
+
+            return response.data.choices[0].message.content.trim();  // Retorna a explicação
+
+        } catch (error) {
+            console.error("Erro ao buscar explicação:", error.response?.data || error.message);
+            return "Não foi possível obter uma explicação no momento.";  // Mensagem de erro
+        }
+    };
+
+    const fetchVerseExplanationVersesRelas = async (verseText) => {
+        try {
+            const params = {
+                model: "gpt-3.5-turbo",
+                messages: [
+                    {
+                        role: "user",
+                        content: `Me indique versículos relacionados a ${verseText}, com um contexto semelhante ou de ligação. Não mostrar os versículos, só o livro, capitulo e verso.`
+                    }
+                ],
+                max_tokens: 100,
+                temperature: 1,
+            };
+
+            const response = await axios.post(
+                "https://api.openai.com/v1/chat/completions",
+                params,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${process.env.REACT_APP_KEY_BIBLE}`,
+                    }
+                }
+            );
+
+            return response.data.choices[0].message.content.trim();  // Retorna a explicação
+
+        } catch (error) {
+            console.error("Erro ao buscar explicação:", error.response?.data || error.message);
+            return "Não foi possível obter uma explicação no momento.";  // Mensagem de erro
+        }
+    };
+
+    const fetchVerseExplanationVersesWord = async (verseText) => {
+        try {
+            const params = {
+                model: "gpt-3.5-turbo",
+                messages: [
+                    {
+                        role: "user",
+                        content: `Dentro do versículo ${verseText}, mostre palavras chaves e seus significados. Do original e lexico.`
+                    }
+                ],
+                max_tokens: 100,
+                temperature: 1,
+            };
+
+            const response = await axios.post(
+                "https://api.openai.com/v1/chat/completions",
+                params,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${process.env.REACT_APP_KEY_BIBLE}`,
                     }
                 }
             );
@@ -88,9 +153,17 @@ const BibleReader = () => {
     // Manipulador para selecionar versículos
     const handleVerseSelect = async (verseText) => {
         setSelectedVerse(verseText);
+
         const explanation = await fetchVerseExplanation(verseText);
         setVerseExplanation(explanation);
-        setIsExplanationVisible(true); // Exibe a explicação ao selecionar um versículo
+
+        const explanationVerses = await fetchVerseExplanationVersesRelas(verseText);
+        setverseExplanationRelas(explanationVerses);
+
+        const explanationWord = await fetchVerseExplanationVersesWord(verseText)
+        setverseExplanationWord(explanationWord)
+
+        setIsExplanationVisible(true); // Exibe
     };
 
     // Manipulador para selecionar a versão
@@ -101,24 +174,35 @@ const BibleReader = () => {
         setSelectedVerse(null); // Redefine o versículo
     };
 
+    // Função para selecionar o tipo de explicação
+    const handleExplanationSelect = (type) => {
+        setSelectedExplanationType(type);
+    };
+
     // Função para fechar a explicação
     const closeExplanation = () => {
         setIsExplanationVisible(false); // Esconde a explicação
+        setSelectedExplanationType(null); // Reseta o tipo de explicação
     };
 
     return (
         <>
             <Menu />
-            <h1>Bíblia Devocional</h1>
+            <h1 className='title-bible'>Bíblia Devocional</h1>
             <div className='app-bible'>
                 {/* Botões para selecionar a versão da Bíblia */}
                 {data ? (
                     <div>
                         <div className='bar-conf-bible'>
                             <div className="version-selectors">
-                                <button className='button-bible' onClick={() => handleVersionSelect("NVI")}>NVI</button>
-                                <button className='button-bible' onClick={() => handleVersionSelect("AA")}>AA</button>
-                                <button className='button-bible' onClick={() => handleVersionSelect("ARA")}>ARA</button>
+                                <select
+                                    value={selectedVersion}
+                                    onChange={(e) => handleVersionSelect(e.target.value)}
+                                >
+                                    <option value="NVI">NVI</option>
+                                    <option value="AA">AA</option>
+                                    <option value="ARA">ARA</option>
+                                </select>
                             </div>
                             <div className='filters-selectors'>
                                 <select value={selectedBook} onChange={handleBookSelect}>
@@ -139,8 +223,8 @@ const BibleReader = () => {
                                     ))}
                                 </select>
                             </div>
-
                         </div>
+
 
                         {data[selectedBook].chapters[selectedChapter].map((verse, index) => (
                             <p
@@ -155,16 +239,20 @@ const BibleReader = () => {
                         ))}
 
                         {/* Exibir a explicação do versículo */}
-                        {isExplanationVisible && verseExplanation && (
+                        {isExplanationVisible && verseExplanation && verseExplanationRelas && (
                             <div className="verse-explanation">
                                 <button className="close-button" onClick={closeExplanation}>Ocultar</button>
 
                                 <div className='toltips-verses'>
-                                    <h3 className='button-verse-explanations'>Explicação do Versículo</h3>
-                                    <h3 className='button-verse-explanations'>Versíclos relacionados</h3>
-                                    <h3 className='button-verse-explanations'>Palavras chave</h3>
+                                    <h3 className='button-verse-explanations' onClick={() => handleExplanationSelect('explanation')}>Explicação do Versículo</h3>
+                                    <h3 className='button-verse-explanations' onClick={() => handleExplanationSelect('related')}>Versículos relacionados</h3>
+                                    <h3 className='button-verse-explanations' onClick={() => handleExplanationSelect('keywords')}>Palavras chave</h3>
                                 </div>
-                                <p>{verseExplanation}</p>
+
+                                {/* Mostra a explicação, baseado na opção selecionada */}
+                                {selectedExplanationType === 'explanation' && <p>{verseExplanation}</p>}
+                                {selectedExplanationType === 'related' && <p>{verseExplanationRelas}</p>}
+                                {selectedExplanationType === 'keywords' && <p>{verseExplanationWord}</p>}
                             </div>
                         )}
                     </div>
