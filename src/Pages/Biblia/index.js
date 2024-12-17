@@ -43,7 +43,7 @@ const BibleReader = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer ${process.env.REACT_APP_KEY_BIBLE}`,
+                        "Authorization": `Bearer ${process.env.REACT_APP_API_KEY_BIBLE}`,
                     }
                 }
             );
