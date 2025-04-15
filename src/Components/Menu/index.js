@@ -67,9 +67,6 @@ const Menu = () => {
     return (
         <div className="menu-container">
             <div className="button-area">
-                <div className="button-inside" onClick={goToCultos}>
-                    {isMobile ? <FontAwesomeIcon icon={faBook} /> : "Livros"}
-                </div>
                 <div className="button-inside" onClick={goToDevocionais}>
                     {isMobile ? <FontAwesomeIcon icon={faBookBible} /> : "BDevo"}
                 </div>
@@ -78,9 +75,6 @@ const Menu = () => {
                 </div>
                 <div className="button-inside" onClick={goToPodcast}>
                     {isMobile ? <FontAwesomeIcon icon={faHeadphones} /> : "Podcast"}
-                </div>
-                <div className="login-button" onClick={goToLogin}>
-                    {nameUser ? nameUser : (isMobile ? <FontAwesomeIcon icon={faSignInAlt} /> : "Entrar")}
                 </div>
             </div>
             

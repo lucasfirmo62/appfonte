@@ -18,6 +18,14 @@ const Podcast = () => {
             });
     }, []);
 
+    function goTo(){
+        window.location.href = "https://www.youtube.com/@fonte.ieadcm/videos"
+    }
+
+    function goToS(){
+        window.location.href = "https://open.spotify.com/show/5FE20sK9pm1hyIKwOCOT4c?si=0e702cea639c438d"
+    }
+
     return (
         <>
             <div className="back-wall">
@@ -26,7 +34,7 @@ const Podcast = () => {
                     <h1>Podcast</h1>
                     <p className="about-page">Assista por aqui, ou na sua plataforma preferida o Podcast de entrevistas.</p>
                     <div className="streamings">
-                        <div className="content-streaming">
+                        <div className="content-streaming" onClick={() => goToS()}>
                             <img className="logo-streams" src="/Spotify.png" alt="Spotify" />
                             <p>Spotify</p>
                         </div>
@@ -34,7 +42,7 @@ const Podcast = () => {
                             <img className="logo-streams" src="/Deezer.webp" alt="Deezer" />
                             <p>Deezer</p>
                         </div>
-                        <div className="content-streaming">
+                        <div className="content-streaming" onClick={() => goTo()}>
                             <img className="logo-streams" src="/youtube.png" alt="Youtube" />
                             <p>Youtube</p>
                         </div>
